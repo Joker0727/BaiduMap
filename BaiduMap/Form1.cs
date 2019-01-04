@@ -40,7 +40,7 @@ namespace BaiduMap
 
         public string sqlitePath = AppDomain.CurrentDomain.BaseDirectory + @"sqlit3.db";
         public SQLiteHelper sqlLiteHelper = null;
-
+        public int getCount = 0;
 
         public Form1()
         {
@@ -52,6 +52,16 @@ namespace BaiduMap
             Control.CheckForIllegalCrossThreadCalls = false;//屏蔽跨线程操作ui控件的异常        
             myUtils = new MyUtils();
             this.MaximizeBox = false;
+            sqlLiteHelper = new SQLiteHelper(sqlitePath);
+            string sqlStr = $"select SearchKeyName from SearchKeyTable";
+            object[] objArr = sqlLiteHelper.GetField(sqlStr);
+            if (objArr.Length > 0)
+            {
+                this.comboBox1.Items.AddRange(objArr);
+            }
+            sqlStr = $"select count(*) from CommentsTable";
+            object commentobj = sqlLiteHelper.GetScalar(sqlStr);
+            this.label5.Text = commentobj.ToString();
         }
         private void textBox3_Click(object sender, EventArgs e)
         {
@@ -64,11 +74,12 @@ namespace BaiduMap
         {
             noPic = this.checkBox2.Checked;
             string btnStr = this.button1.Text;
-            searchStr = this.textBox1.Text;
+            searchStr = this.comboBox1.Text.ToLower();
             //commentStr = this.textBox2.Text;
             imgFolder = this.textBox3.Text;
             isRandom = this.checkBox1.Checked;
             fNumber = Convert.ToInt32(this.numericUpDown1.Text);
+
             if (string.IsNullOrEmpty(searchStr))
             {
                 MessageBox.Show("搜索关键词词不能为空！", "BaiduMap");
@@ -76,13 +87,13 @@ namespace BaiduMap
             }
             //if (string.IsNullOrEmpty(imgFolder))
             //{
-            //    MessageBox.Show("图片路径不能为空！", "BaiduMap");
-            //    return;
+            //MessageBox.Show("图片路径不能为空！", "BaiduMap");
+            //return;
             //}
             //if (!Directory.Exists(imgFolder))
             //{
-            //    MessageBox.Show("图片路径不存在！", "BaiduMap");
-            //    return;
+            //MessageBox.Show("图片路径不存在！", "BaiduMap");
+            //return;
             //}
             //if (commentStr.Length < 15)
             //{
@@ -99,7 +110,7 @@ namespace BaiduMap
                 this.button1.Text = "暂停";
                 if (thread == null)
                 {
-                    sel = new SeleniumHelper();
+                    sel = new SeleniumHelper(1);
                     sel.driver.Navigate().GoToUrl(mainUrl);
                     if (sel.driver.WindowHandles.Count() > 1)
                     {
@@ -111,7 +122,8 @@ namespace BaiduMap
                     DialogResult dr = MessageBox.Show("请先登录成功后，再点击确定！", "BaiduMap", message);
                     if (dr == DialogResult.OK)
                     {
-                        imgPathList = myUtils.GetImgs(imgFolder, 2);
+                        if (!noPic)
+                            imgPathList = myUtils.GetImgs(imgFolder, 2);
                         thread = new Thread(StartWork);
                         thread.IsBackground = true;
                         thread.Start();
@@ -124,7 +136,7 @@ namespace BaiduMap
                 }
                 else
                 {
-                    thread.Resume();
+                    thread?.Resume();
                 }
             }
             else
@@ -136,9 +148,31 @@ namespace BaiduMap
 
         private void button2_Click(object sender, EventArgs e)
         {
-            getCommentsthread = new Thread(GetComments);
-            getCommentsthread.IsBackground = true;
-            getCommentsthread.Start();
+            if (!IsAuthorised())
+            {
+                MessageBox.Show("尚未授权！", "BaiduMap");
+                return;
+            }
+            string bnt2Str = this.button2.Text;
+            if (bnt2Str == "获取评论")
+            {
+                this.button2.Text = "暂停";
+                if (getCommentsthread == null)
+                {
+                    getCommentsthread = new Thread(GetComments);
+                    getCommentsthread.IsBackground = true;
+                    getCommentsthread.Start();
+                }
+                else
+                {
+                    getCommentsthread.Resume();
+                }
+            }
+            else
+            {
+                this.button2.Text = "获取评论";
+                getCommentsthread?.Suspend();
+            }
         }
 
         public void StartWork()
@@ -158,14 +192,14 @@ namespace BaiduMap
                 IWebElement soleInput = sel.FindElementById("sole-input");
                 soleInput.Clear();
                 soleInput.SendKeys(searchStr);
-                Thread.Sleep(1000 * 1);
+                Thread.Sleep(1000 * 3);
 
                 IWebElement searchButton = sel.FindElementById("search-button");
                 //移动光标到指定的元素上perform
                 Actions action = new Actions(sel.driver);
                 action.MoveToElement(searchButton).Perform();
                 searchButton.Click();
-                Thread.Sleep(1000 * 1);
+                Thread.Sleep(1000 * 3);
                 bool isOk = false;
                 while (!isOk)
                 {
@@ -192,17 +226,17 @@ namespace BaiduMap
                 }
             }
 
-            Thread.Sleep(1000 * 1);
+            Thread.Sleep(1000 * 3);
             var shopNodeList = sel.FindElementsByCss(".search-item.base-item");
             try
             {
                 IWebElement shopNameNode = shopNodeList[current].FindElement(By.ClassName("n-blue"));
                 shopName = shopNameNode?.Text;
                 shopNodeList[current].Click();
-                Thread.Sleep(1000 * 2);
+                Thread.Sleep(1000 * 3);
                 IWebElement writeTextNode = sel.FindElementByClassName("write-btn-text");
                 writeTextNode.Click();
-                Thread.Sleep(1000 * 1);
+                Thread.Sleep(1000 * 3);
                 string newWindows = sel.driver.WindowHandles[1];
                 sel.driver.SwitchTo().Window(newWindows);
                 Thread.Sleep(1000 * 2);
@@ -212,7 +246,7 @@ namespace BaiduMap
                     if (isRefresh)
                     {
                         ((IJavaScriptExecutor)sel.driver).ExecuteScript("location.reload()");//刷新
-                        Thread.Sleep(1000 * 2);
+                        Thread.Sleep(1000 * 3);
                         isRefresh = false;
                     }
                 }
@@ -222,12 +256,12 @@ namespace BaiduMap
                     int nodeCount = startNodeList.Count();
                     for (int i = 0; i < nodeCount; i++)
                     {
-                        Thread.Sleep(30);
+                        Thread.Sleep(new Random().Next(0, 5) * 100);
                         Actions actions = new Actions(sel.driver);
                         actions.MoveToElement(startNodeList[i]).Perform();
-                        Thread.Sleep(30);
+                        Thread.Sleep(new Random().Next(0, 5) * 100);
                         if (i == nodeCount - 1)
-                            startNodeList[nodeCount - 1].Click();
+                            startNodeList[new Random().Next(0, 5)].Click();
                     }
                 }
                 else
@@ -241,12 +275,12 @@ namespace BaiduMap
                     int nodeCount = facilitiesNodeList.Count();
                     for (int i = 0; i < nodeCount; i++)
                     {
-                        Thread.Sleep(30);
+                        Thread.Sleep(new Random().Next(0, 5) * 100);
                         Actions actions = new Actions(sel.driver);
                         actions.MoveToElement(facilitiesNodeList[i]).Perform();
-                        Thread.Sleep(30);
+                        Thread.Sleep(new Random().Next(0, 5) * 100);
                         if (i == nodeCount - 1)
-                            facilitiesNodeList[nodeCount - 1].Click();
+                            facilitiesNodeList[new Random().Next(0, 5)].Click();
                     }
                 }
                 var environmentalNodeList = sel.FindElementsByXPath("//ul[@id='8']/li");
@@ -255,12 +289,12 @@ namespace BaiduMap
                     int nodeCount = environmentalNodeList.Count();
                     for (int i = 0; i < nodeCount; i++)
                     {
-                        Thread.Sleep(30);
+                        Thread.Sleep(new Random().Next(0, 5) * 100);
                         Actions actions = new Actions(sel.driver);
                         actions.MoveToElement(environmentalNodeList[i]).Perform();
-                        Thread.Sleep(30);
+                        Thread.Sleep(new Random().Next(0, 5) * 100);
                         if (i == nodeCount - 1)
-                            environmentalNodeList[nodeCount - 1].Click();
+                            environmentalNodeList[new Random().Next(0, 5)].Click();
                     }
                 }
                 var servicesNodeList = sel.FindElementsByXPath("//ul[@id='9']/li");
@@ -269,19 +303,42 @@ namespace BaiduMap
                     int nodeCount = servicesNodeList.Count();
                     for (int i = 0; i < nodeCount; i++)
                     {
-                        Thread.Sleep(30);
+                        Thread.Sleep(new Random().Next(0, 5) * 100);
                         Actions actions = new Actions(sel.driver);
                         actions.MoveToElement(servicesNodeList[i]).Perform();
-                        Thread.Sleep(30);
+                        Thread.Sleep(new Random().Next(0, 5) * 100);
                         if (i == nodeCount - 1)
-                            servicesNodeList[nodeCount - 1].Click();
+                            servicesNodeList[new Random().Next(0, 5)].Click();
                     }
                 }
                 IWebElement commentInputNode = sel.FindElementById("remark-text");
                 if (commentInputNode != null)
                 {
-                    commentInputNode.SendKeys(commentStr);
-                    Thread.Sleep(1000 * 1);
+                    List<object> objList = new List<object>();
+                    string tempStr = string.Empty;
+                    int rand = new Random().Next(7, 20);
+                    for (int i = 0; i < rand; i++)
+                    {
+                        try
+                        {
+                            string sql = $"select Id from SearchKeyTable where SearchKeyName = '{searchStr}'";
+                            int key = Convert.ToInt32(sqlLiteHelper.GetScalar(sql));
+                            sql = $"SELECT * FROM CommentsTable where IsPublish = 0 and SearchKey ={key} ORDER BY RANDOM() limit 1";
+                            objList = sqlLiteHelper.GetRow(sql).ToList();
+                            commentStr = objList[2].ToString();
+                            tempStr += commentStr;
+                            // sqlLiteHelper.RunSql($"update CommentsTable set  IsPublish = 1 where Id = {Convert.ToInt32(objList[0])}");
+                            commentInputNode.SendKeys(commentStr);
+                            Thread.Sleep(1000 * 2);
+                            if (tempStr.Length > 800)
+                                break;
+                        }
+                        catch (Exception er)
+                        {
+                            myUtils.WriteLog("评论异常" + er);
+                        }
+                    }
+
                     //上传图片                   
                     if (!noPic)
                         UpLoadPic();
@@ -299,7 +356,9 @@ namespace BaiduMap
                 lt.Text = shopName;
                 lt.SubItems.Add("发布成功");
                 this.listView1.Items.Add(lt);
-                Thread.Sleep(1000 * 2);
+                int random = new Random().Next(1, 10);
+                this.label9.Text = random.ToString();
+                Thread.Sleep(1000 * 60 * random);
                 goto GETSHOPLIST;
             }
             catch (Exception ex)
@@ -351,40 +410,71 @@ namespace BaiduMap
             return random;
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            searchStr = this.comboBox1.Text.ToLower();
+            if (string.IsNullOrEmpty(searchStr))
+            {
+                MessageBox.Show("请选择相关的关键词！", "BaiduMap");
+                return;
+            }
+            string deleteStr = $"delete from CommentsTable where SearchKey ='{searchStr}'";
+            sqlLiteHelper.RunSql(deleteStr);
+        }
+
         /// <summary>
         /// 获取评论
         /// </summary>
         public void GetComments()
         {
-            sqlLiteHelper = new SQLiteHelper(sqlitePath);
             string meituanUrl = "https://bj.meituan.com/s/ktv/";
-            searchStr = this.textBox1.Text;
+            searchStr = this.comboBox1.Text.ToLower();
+            int key = 0;
             if (string.IsNullOrEmpty(searchStr))
             {
                 MessageBox.Show("搜索关键词词不能为空！", "BaiduMap");
                 return;
             }
+            string sqlStr = $"select Id from SearchKeyTable where SearchKeyName = '{searchStr}'";
+            object[] objArr = sqlLiteHelper.GetField(sqlStr);
+            if (objArr.Length <= 0)
+            {
+                sqlStr = $"insert into SearchKeyTable (SearchKeyName)values('{searchStr}')";
+                key = sqlLiteHelper.ExeSql(sqlStr);
+            }
+            else
+                key = Convert.ToInt32(objArr[0]);
             sel = new SeleniumHelper(1);
             sel.driver.Navigate().GoToUrl(meituanUrl);
-
-            IWebElement searchInput = sel.FindElementByClassName("header-search-input");
-            searchInput.Clear();
-            searchInput.SendKeys(searchStr);
-            Thread.Sleep(500);
-            IWebElement searchBtn = sel.FindElementByClassName("header-search-btn");
-            searchBtn.Click();
-            //var shopNodeList = sel.FindElementsByXPath("//div[@class='common-list-main']/div");
-            var shopNodeList = sel.FindElementsByCss(".link.list-item-pic.backup-color");
-            string shopUrl = string.Empty, userCommentStr = string.Empty, sqlStr = string.Empty;
-            foreach (var shopNode in shopNodeList)
+            MessageBox.Show("您可以选择采集的城市！", "BaiduMap");
+            int shopCount = 0;
+            SHOPLIST:
             {
+                sel.driver.Navigate().GoToUrl(meituanUrl);
+                IWebElement searchInput = sel.FindElementByClassName("header-search-input");
+                searchInput.Clear();
+                searchInput.SendKeys(searchStr);
+                Thread.Sleep(500);
+                IWebElement searchBtn = sel.FindElementByClassName("header-search-btn");
+                searchBtn.Click();
+                //var shopNodeList = sel.FindElementsByXPath("//div[@class='common-list-main']/div");
+                var shopNodeList = sel.FindElementsByCss(".link.list-item-pic.backup-color");
+                string shopUrl = string.Empty, userCommentStr = string.Empty;
+
                 try
                 {
-                    shopUrl = shopNode.GetAttribute("href");
+                    shopUrl = shopNodeList[shopCount].GetAttribute("href");
+                    shopCount++;
                     sel.driver.Navigate().GoToUrl(shopUrl);
                     Thread.Sleep(1000 * 3);
                     while (true)
                     {
+                        IWebElement noBtn = sel.FindElementByClassName("no-button");
+                        if (noBtn != null)
+                        {
+                            noBtn.Click();
+                            Thread.Sleep(1000 * 1);
+                        }
                         IWebElement currentPageNode = sel.FindElementByCss(".pagination-item.select.num-item");
                         var pageliaNodeList = sel.FindElementsByXPath("//ul[@class='clearfix']/li/a");
                         int pageNodeCount = pageliaNodeList.Count();
@@ -398,8 +488,10 @@ namespace BaiduMap
                                 userCommentStr = userCommentNode.Text;
                                 if (userCommentStr.Length > 15 & userCommentStr.Length < 2000)
                                 {
-                                    sqlStr = $"insert into CommentsTable (Comments,IsPublish)values('{userCommentStr}',0)";
+                                    sqlStr = $"insert into CommentsTable (SearchKey,Comments,IsPublish)values({key},'{userCommentStr}',0)";
                                     sqlLiteHelper.RunSql(sqlStr);
+                                    getCount++;
+                                    this.label7.Text = getCount.ToString();
                                 }
                             }
                             catch (Exception ex)
@@ -423,6 +515,8 @@ namespace BaiduMap
                     myUtils.WriteLog("进入店铺获取用户评论失败：" + e);
                 }
             }
+            goto SHOPLIST;
+
         }
 
         /// <summary>

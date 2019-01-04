@@ -49,3 +49,12 @@ E:\My\BaiduMap\BaiduMap\bin\Debug\EntityFramework.xml
 E:\My\BaiduMap\BaiduMap\bin\Debug\EntityFramework.SqlServer.xml
 E:\My\BaiduMap\BaiduMap\bin\Debug\System.Data.SQLite.xml
 E:\My\BaiduMap\BaiduMap\bin\Debug\System.Data.SQLite.dll.config
+E:\Private\BaiduMap\BaiduMap\bin\Debug\EntityFramework.dll
+E:\Private\BaiduMap\BaiduMap\bin\Debug\EntityFramework.SqlServer.dll
+E:\Private\BaiduMap\BaiduMap\bin\Debug\System.Data.SQLite.dll
+E:\Private\BaiduMap\BaiduMap\bin\Debug\System.Data.SQLite.EF6.dll
+E:\Private\BaiduMap\BaiduMap\bin\Debug\System.Data.SQLite.Linq.dll
+E:\Private\BaiduMap\BaiduMap\bin\Debug\EntityFramework.xml
+E:\Private\BaiduMap\BaiduMap\bin\Debug\EntityFramework.SqlServer.xml
+E:\Private\BaiduMap\BaiduMap\bin\Debug\System.Data.SQLite.xml
+E:\Private\BaiduMap\BaiduMap\bin\Debug\System.Data.SQLite.dll.config

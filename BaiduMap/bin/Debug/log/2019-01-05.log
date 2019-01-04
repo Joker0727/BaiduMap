@@ -1,0 +1,23 @@
+﻿2019-01-05 00:32:30 -> System.ArgumentOutOfRangeException: 索引超出范围。必须为非负值并小于集合大小。
+参数名: index
+   在 System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   在 System.Collections.Generic.List`1.get_Item(Int32 index)
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 240
+2019-01-05 00:32:46 -> System.ArgumentOutOfRangeException: 索引超出范围。必须为非负值并小于集合大小。
+参数名: index
+   在 System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   在 System.Collections.Generic.List`1.get_Item(Int32 index)
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 240
+2019-01-05 01:03:45 -> 进入店铺获取用户评论失败：System.ArgumentOutOfRangeException: 索引超出范围。必须为非负值并小于集合大小。
+参数名: index
+   在 System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   在 System.Collections.Generic.List`1.get_Item(Int32 index)
+   在 BaiduMap.Form1.GetComments() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 466
+2019-01-05 01:04:13 -> 进入店铺获取用户评论失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.GetComments() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 504
+2019-01-05 01:04:22 -> 进入店铺获取用户评论失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.GetComments() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 504
+2019-01-05 01:14:35 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 238
+2019-01-05 01:14:47 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 238

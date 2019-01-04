@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MyTools
 {
-   public class SeleniumHelper
+    public class SeleniumHelper
     {
         public IWebDriver driver = null;
 
@@ -23,7 +23,15 @@ namespace MyTools
             {
                 case 0:
                     {
-                        driver = new FirefoxDriver();
+                        try
+                        {
+                            driver = new FirefoxDriver();
+                        }
+                        catch (Exception ex)
+                        {
+                            CloseBrowserAndDriver();
+                            driver = new ChromeDriver();
+                        }
                         break;
                     }
                 case 1:
@@ -34,10 +42,10 @@ namespace MyTools
                 default:
                     break;
             }
-           
+
             WinTools wt = new WinTools();
             wt.MiniMizeAppication("geckodriver");
-            wt.MiniMizeAppication("chromedriver"); 
+            wt.MiniMizeAppication("chromedriver");
         }
 
         /// <summary>
