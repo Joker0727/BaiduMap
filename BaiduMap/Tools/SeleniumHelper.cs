@@ -18,7 +18,7 @@ namespace MyTools
 
         public SeleniumHelper(int driverType = 0)
         {
-            //CloseBrowserAndDriver();
+            CloseBrowserAndDriver();
             switch (driverType)
             {
                 case 0:

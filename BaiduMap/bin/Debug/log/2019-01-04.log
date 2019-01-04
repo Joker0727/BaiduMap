@@ -1,0 +1,18 @@
+﻿2019-01-04 17:32:08 -> 保存评论失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.GetComments() 位置 E:\My\BaiduMap\BaiduMap\Form1.cs:行号 401
+2019-01-04 17:32:08 -> 保存评论失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.GetComments() 位置 E:\My\BaiduMap\BaiduMap\Form1.cs:行号 401
+2019-01-04 17:32:08 -> 保存评论失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.GetComments() 位置 E:\My\BaiduMap\BaiduMap\Form1.cs:行号 401
+2019-01-04 17:32:08 -> 保存评论失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.GetComments() 位置 E:\My\BaiduMap\BaiduMap\Form1.cs:行号 401
+2019-01-04 17:32:08 -> 保存评论失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.GetComments() 位置 E:\My\BaiduMap\BaiduMap\Form1.cs:行号 401
+2019-01-04 17:32:08 -> 保存评论失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.GetComments() 位置 E:\My\BaiduMap\BaiduMap\Form1.cs:行号 401
+2019-01-04 17:32:09 -> 保存评论失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.GetComments() 位置 E:\My\BaiduMap\BaiduMap\Form1.cs:行号 401
+2019-01-04 17:32:09 -> 保存评论失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.GetComments() 位置 E:\My\BaiduMap\BaiduMap\Form1.cs:行号 401
+2019-01-04 17:32:09 -> 进入店铺获取用户评论失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.GetComments() 位置 E:\My\BaiduMap\BaiduMap\Form1.cs:行号 411
