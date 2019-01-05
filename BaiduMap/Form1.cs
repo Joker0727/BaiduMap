@@ -41,6 +41,9 @@ namespace BaiduMap
         public string sqlitePath = AppDomain.CurrentDomain.BaseDirectory + @"sqlit3.db";
         public SQLiteHelper sqlLiteHelper = null;
         public int getCount = 0;
+        public TimeSpan dtTo = new TimeSpan();
+        public bool IsCountDown = false;
+
 
         public Form1()
         {
@@ -110,7 +113,7 @@ namespace BaiduMap
                 this.button1.Text = "暂停";
                 if (thread == null)
                 {
-                    sel = new SeleniumHelper(1);
+                    sel = new SeleniumHelper();
                     sel.driver.Navigate().GoToUrl(mainUrl);
                     if (sel.driver.WindowHandles.Count() > 1)
                     {
@@ -137,12 +140,14 @@ namespace BaiduMap
                 else
                 {
                     thread?.Resume();
+                    this.timer1.Start();
                 }
             }
             else
             {
                 this.button1.Text = "开始";
                 thread?.Suspend();
+                this.timer1.Stop();
             }
         }
 
@@ -329,8 +334,8 @@ namespace BaiduMap
                             tempStr += commentStr;
                             // sqlLiteHelper.RunSql($"update CommentsTable set  IsPublish = 1 where Id = {Convert.ToInt32(objList[0])}");
                             commentInputNode.SendKeys(commentStr);
-                            Thread.Sleep(1000 * 2);
-                            if (tempStr.Length > 800)
+                            Thread.Sleep(1000 * 4);
+                            if (tempStr.Length > 500)
                                 break;
                         }
                         catch (Exception er)
@@ -356,9 +361,7 @@ namespace BaiduMap
                 lt.Text = shopName;
                 lt.SubItems.Add("发布成功");
                 this.listView1.Items.Add(lt);
-                int random = new Random().Next(1, 10);
-                this.label9.Text = random.ToString();
-                Thread.Sleep(1000 * 60 * random);
+                CountDown();
                 goto GETSHOPLIST;
             }
             catch (Exception ex)
@@ -370,6 +373,26 @@ namespace BaiduMap
                 this.listView1.Items.Add(lt);
                 myUtils.WriteLog(ex);
                 goto GETSHOPLIST;
+            }
+        }
+
+        public void CountDown()
+        {
+            int random = new Random().Next(1, 10);
+            dtTo = new TimeSpan(0, random, 0); //设置开始时间
+            this.Invoke(new Action(() =>
+            {
+                this.timer1.Enabled = true;
+                this.timer1.Start();
+            }));
+            while (true)
+            {
+                Thread.Sleep(1000 * 5);
+                if (IsCountDown)
+                {
+                    IsCountDown = false;
+                    break;
+                }
             }
         }
 
@@ -422,6 +445,18 @@ namespace BaiduMap
             sqlLiteHelper.RunSql(deleteStr);
         }
 
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            dtTo = dtTo.Subtract(new TimeSpan(0, 0, 1));
+            this.label9.Text = dtTo.Minutes.ToString() + " 分 " + dtTo.Seconds + " 秒";
+            if (dtTo.TotalSeconds <= 0.0)//当倒计时完毕
+            {
+                timer1.Enabled = false;   //其中可自行添加相应的提示框或者方法函数
+                this.timer1.Stop();
+                IsCountDown = true;
+            }
+        }
+
         /// <summary>
         /// 获取评论
         /// </summary>
@@ -444,7 +479,7 @@ namespace BaiduMap
             }
             else
                 key = Convert.ToInt32(objArr[0]);
-            sel = new SeleniumHelper(1);
+            sel = new SeleniumHelper();
             sel.driver.Navigate().GoToUrl(meituanUrl);
             MessageBox.Show("您可以选择采集的城市！", "BaiduMap");
             int shopCount = 0;
