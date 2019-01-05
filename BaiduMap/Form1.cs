@@ -126,7 +126,22 @@ namespace BaiduMap
                     if (dr == DialogResult.OK)
                     {
                         if (!noPic)
+                        {
                             imgPathList = myUtils.GetImgs(imgFolder, 2);
+                            string imgSql = "delete from ImageTable";
+                            sqlLiteHelper.RunSql(imgSql);
+                            foreach (var imgPath in imgPathList)
+                            {
+                                try
+                                {
+                                    sqlLiteHelper.RunSql($"insert into ImageTable (ImagePath,IsUpLoad)values('{imgPath}',0)");
+                                }
+                                catch (Exception ec)
+                                {
+                                    myUtils.WriteLog("导入图片错误：" + ec);
+                                }
+                            }
+                        }
                         thread = new Thread(StartWork);
                         thread.IsBackground = true;
                         thread.Start();
@@ -350,6 +365,9 @@ namespace BaiduMap
                     IWebElement submitBtnNode = sel.FindElementByCss(".submit-btn.state-finish");
                     if (submitBtnNode == null)
                         submitBtnNode = sel.FindElementByCss(".submit-btn.disabled.state-pedding");
+                    if (submitBtnNode == null)
+                        submitBtnNode = sel.FindElementByCss(".submit-btn.state-confirm");
+
                     submitBtnNode.Click();
                 }
                 Thread.Sleep(1000 * 2);
@@ -408,13 +426,17 @@ namespace BaiduMap
             {
                 try
                 {
-                    tempPath = imgPathList[i];
+                    string imgsql = $"SELECT * FROM ImageTable where IsUpLoad = 0 ORDER BY RANDOM() limit 1";
+                    object[] objArr = sqlLiteHelper.GetRow(imgsql);
+                    tempPath = objArr[1].ToString();
                     if (!File.Exists(tempPath))
                         continue;
                     // 上传图片
                     IWebElement addPicBtnNode = sel.FindElementByName("file");
                     addPicBtnNode.SendKeys(tempPath);
-                    Thread.Sleep(1000 * 2);
+
+                    sqlLiteHelper.RunSql($"update ImageTable set IsUpLoad =1 where Id ={Convert.ToInt32(objArr[0])}");
+                    Thread.Sleep(1000 * 5);
                 }
                 catch (Exception ex)
                 {
@@ -425,10 +447,9 @@ namespace BaiduMap
 
         public int GetRandom()
         {
-            int imgCount = imgPathList.Count();
             Random randObj = new Random();
             int start = 1;//随机数可取该下界值
-            int end = imgCount + 1;//随机数不能取该上界值
+            int end = 10;//随机数不能取该上界值
             int random = randObj.Next(start, end);
             return random;
         }

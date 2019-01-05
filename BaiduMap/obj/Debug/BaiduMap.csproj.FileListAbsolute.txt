@@ -58,4 +58,3 @@ E:\Private\BaiduMap\BaiduMap\bin\Debug\EntityFramework.xml
 E:\Private\BaiduMap\BaiduMap\bin\Debug\EntityFramework.SqlServer.xml
 E:\Private\BaiduMap\BaiduMap\bin\Debug\System.Data.SQLite.xml
 E:\Private\BaiduMap\BaiduMap\bin\Debug\System.Data.SQLite.dll.config
-E:\Private\BaiduMap\BaiduMap\obj\Debug\BaiduMap.csprojAssemblyReference.cache
