@@ -16,3 +16,65 @@
    在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 258
 2019-01-06 00:18:42 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
    在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 258
+2019-01-06 14:19:12 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 272
+2019-01-06 14:19:21 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 272
+2019-01-06 14:20:48 -> OpenQA.Selenium.WebDriverException: The HTTP request to the remote WebDriver server for URL http://localhost:49317/session/874c5c95-7c69-42ad-a721-589287f3ca12/element/9b810e08-92e0-49a7-b8ad-d71337b1a43e/click timed out after 60 seconds. ---> System.Net.WebException: 请求被中止: 操作超时。
+   在 System.Net.HttpWebRequest.GetResponse()
+   在 OpenQA.Selenium.Remote.HttpCommandExecutor.MakeHttpRequest(HttpRequestInfo requestInfo)
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 OpenQA.Selenium.Remote.HttpCommandExecutor.MakeHttpRequest(HttpRequestInfo requestInfo)
+   在 OpenQA.Selenium.Remote.HttpCommandExecutor.Execute(Command commandToExecute)
+   在 OpenQA.Selenium.Remote.DriverServiceCommandExecutor.Execute(Command commandToExecute)
+   在 OpenQA.Selenium.Remote.RemoteWebDriver.Execute(String driverCommandToExecute, Dictionary`2 parameters)
+   在 OpenQA.Selenium.Remote.RemoteWebElement.Execute(String commandToExecute, Dictionary`2 parameters)
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 415
+2019-01-06 14:23:13 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 272
+2019-01-06 14:23:22 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 272
+2019-01-06 14:30:38 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 272
+2019-01-06 14:30:52 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 272
+2019-01-06 14:35:12 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 272
+2019-01-06 14:35:20 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 272
+2019-01-06 14:36:30 -> 图片上传失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.UpLoadPic() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 461
+2019-01-06 14:36:30 -> 图片上传失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.UpLoadPic() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 461
+2019-01-06 14:36:30 -> 图片上传失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.UpLoadPic() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 461
+2019-01-06 14:36:47 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 272
+2019-01-06 14:42:24 -> 图片上传失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.UpLoadPic() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 461
+2019-01-06 14:42:24 -> 图片上传失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.UpLoadPic() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 461
+2019-01-06 14:42:25 -> 图片上传失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.UpLoadPic() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 461
+2019-01-06 14:44:43 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 272
+2019-01-06 14:44:57 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 272
+2019-01-06 14:45:11 -> System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.StartWork() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 272
+2019-01-06 14:52:10 -> 图片上传失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.UpLoadPic() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 461
+2019-01-06 14:52:12 -> 图片上传失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.UpLoadPic() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 461
+2019-01-06 14:52:12 -> 图片上传失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.UpLoadPic() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 461
+2019-01-06 14:52:12 -> 图片上传失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.UpLoadPic() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 461
+2019-01-06 14:52:12 -> 图片上传失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.UpLoadPic() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 461
+2019-01-06 14:52:12 -> 图片上传失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.UpLoadPic() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 461
+2019-01-06 14:58:42 -> 图片上传失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.UpLoadPic() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 461
+2019-01-06 14:58:42 -> 图片上传失败：System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 BaiduMap.Form1.UpLoadPic() 位置 E:\Private\BaiduMap\BaiduMap\Form1.cs:行号 461

@@ -43,7 +43,7 @@ namespace BaiduMap
         public int getCount = 0;
         public TimeSpan dtTo = new TimeSpan();
         public bool IsCountDown = false;
-
+        public bool IsSlow = false;
 
         public Form1()
         {
@@ -82,7 +82,7 @@ namespace BaiduMap
             imgFolder = this.textBox3.Text;
             isRandom = this.checkBox1.Checked;
             fNumber = Convert.ToInt32(this.numericUpDown1.Text);
-
+            IsSlow = this.checkBox3.Checked;
             if (string.IsNullOrEmpty(searchStr))
             {
                 MessageBox.Show("搜索关键词词不能为空！", "BaiduMap");
@@ -155,14 +155,16 @@ namespace BaiduMap
                 else
                 {
                     thread?.Resume();
-                    this.timer1.Start();
+                    if (IsSlow)
+                        this.timer1.Start();
                 }
             }
             else
             {
                 this.button1.Text = "开始";
                 thread?.Suspend();
-                this.timer1.Stop();
+                if (IsSlow || this.timer1.Enabled)
+                    this.timer1.Stop();
             }
         }
 
@@ -204,6 +206,8 @@ namespace BaiduMap
             ListViewItem lt = null;
             GETSHOPLIST:
             {
+                noPic = this.checkBox2.Checked;
+                IsSlow = this.checkBox3.Checked;
                 if (current >= 10)
                 {
                     page++;
@@ -212,14 +216,20 @@ namespace BaiduMap
                 IWebElement soleInput = sel.FindElementById("sole-input");
                 soleInput.Clear();
                 soleInput.SendKeys(searchStr);
-                Thread.Sleep(1000 * 3);
+                if (!IsSlow)
+                    Thread.Sleep(1000 * 1);
+                else
+                    Thread.Sleep(1000 * 3);
 
                 IWebElement searchButton = sel.FindElementById("search-button");
                 //移动光标到指定的元素上perform
                 Actions action = new Actions(sel.driver);
                 action.MoveToElement(searchButton).Perform();
                 searchButton.Click();
-                Thread.Sleep(1000 * 3);
+                if (!IsSlow)
+                    Thread.Sleep(1000 * 2);
+                else
+                    Thread.Sleep(1000 * 3);
                 bool isOk = false;
                 while (!isOk)
                 {
@@ -245,18 +255,26 @@ namespace BaiduMap
                     }
                 }
             }
-
-            Thread.Sleep(1000 * 3);
+            if (!IsSlow)
+                Thread.Sleep(1000 * 2);
+            else
+                Thread.Sleep(1000 * 3);
             var shopNodeList = sel.FindElementsByCss(".search-item.base-item");
             try
             {
                 IWebElement shopNameNode = shopNodeList[current].FindElement(By.ClassName("n-blue"));
                 shopName = shopNameNode?.Text;
                 shopNodeList[current].Click();
-                Thread.Sleep(1000 * 3);
+                if (!IsSlow)
+                    Thread.Sleep(1000 * 3);
+                else
+                    Thread.Sleep(1000 * 4);
                 IWebElement writeTextNode = sel.FindElementByClassName("write-btn-text");
                 writeTextNode.Click();
-                Thread.Sleep(1000 * 3);
+                if (!IsSlow)
+                    Thread.Sleep(1000 * 2);
+                else
+                    Thread.Sleep(1000 * 3);
                 string newWindows = sel.driver.WindowHandles[1];
                 sel.driver.SwitchTo().Window(newWindows);
                 Thread.Sleep(1000 * 2);
@@ -276,10 +294,12 @@ namespace BaiduMap
                     int nodeCount = startNodeList.Count();
                     for (int i = 0; i < nodeCount; i++)
                     {
-                        Thread.Sleep(new Random().Next(0, 5) * 100);
+                        if (IsSlow)
+                            Thread.Sleep(new Random().Next(0, 5) * 100);
                         Actions actions = new Actions(sel.driver);
                         actions.MoveToElement(startNodeList[i]).Perform();
-                        Thread.Sleep(new Random().Next(0, 5) * 100);
+                        if (IsSlow)
+                            Thread.Sleep(new Random().Next(0, 5) * 100);
                         if (i == nodeCount - 1)
                             startNodeList[new Random().Next(0, 5)].Click();
                     }
@@ -295,10 +315,12 @@ namespace BaiduMap
                     int nodeCount = facilitiesNodeList.Count();
                     for (int i = 0; i < nodeCount; i++)
                     {
-                        Thread.Sleep(new Random().Next(0, 5) * 100);
+                        if (IsSlow)
+                            Thread.Sleep(new Random().Next(0, 5) * 100);
                         Actions actions = new Actions(sel.driver);
                         actions.MoveToElement(facilitiesNodeList[i]).Perform();
-                        Thread.Sleep(new Random().Next(0, 5) * 100);
+                        if (IsSlow)
+                            Thread.Sleep(new Random().Next(0, 5) * 100);
                         if (i == nodeCount - 1)
                             facilitiesNodeList[new Random().Next(0, 5)].Click();
                     }
@@ -309,10 +331,12 @@ namespace BaiduMap
                     int nodeCount = environmentalNodeList.Count();
                     for (int i = 0; i < nodeCount; i++)
                     {
-                        Thread.Sleep(new Random().Next(0, 5) * 100);
+                        if (IsSlow)
+                            Thread.Sleep(new Random().Next(0, 5) * 100);
                         Actions actions = new Actions(sel.driver);
                         actions.MoveToElement(environmentalNodeList[i]).Perform();
-                        Thread.Sleep(new Random().Next(0, 5) * 100);
+                        if (IsSlow)
+                            Thread.Sleep(new Random().Next(0, 5) * 100);
                         if (i == nodeCount - 1)
                             environmentalNodeList[new Random().Next(0, 5)].Click();
                     }
@@ -323,10 +347,12 @@ namespace BaiduMap
                     int nodeCount = servicesNodeList.Count();
                     for (int i = 0; i < nodeCount; i++)
                     {
-                        Thread.Sleep(new Random().Next(0, 5) * 100);
+                        if (IsSlow)
+                            Thread.Sleep(new Random().Next(0, 5) * 100);
                         Actions actions = new Actions(sel.driver);
                         actions.MoveToElement(servicesNodeList[i]).Perform();
-                        Thread.Sleep(new Random().Next(0, 5) * 100);
+                        if (IsSlow)
+                            Thread.Sleep(new Random().Next(0, 5) * 100);
                         if (i == nodeCount - 1)
                             servicesNodeList[new Random().Next(0, 5)].Click();
                     }
@@ -349,7 +375,8 @@ namespace BaiduMap
                             tempStr += commentStr;
                             // sqlLiteHelper.RunSql($"update CommentsTable set  IsPublish = 1 where Id = {Convert.ToInt32(objList[0])}");
                             commentInputNode.SendKeys(commentStr);
-                            Thread.Sleep(1000 * 4);
+                            if (IsSlow)
+                                Thread.Sleep(1000 * 4);
                             if (tempStr.Length > 500)
                                 break;
                         }
@@ -370,7 +397,10 @@ namespace BaiduMap
 
                     submitBtnNode.Click();
                 }
-                Thread.Sleep(1000 * 2);
+                if (!IsSlow)
+                    Thread.Sleep(1000 * 2);
+                else
+                    Thread.Sleep(1000 * 3);
                 sel.driver.Close();
                 string oldWindows = sel.driver.WindowHandles[0];
                 sel.driver.SwitchTo().Window(oldWindows);
@@ -379,7 +409,8 @@ namespace BaiduMap
                 lt.Text = shopName;
                 lt.SubItems.Add("发布成功");
                 this.listView1.Items.Add(lt);
-                CountDown();
+                if (IsSlow)
+                    CountDown();
                 goto GETSHOPLIST;
             }
             catch (Exception ex)
@@ -420,7 +451,7 @@ namespace BaiduMap
             if (isRandom)
                 count = GetRandom();
             else
-                count = fNumber > 0 ? fNumber : 9;
+                count = fNumber > 0 ? fNumber : 2;
             string tempPath = string.Empty;
             for (int i = 0; i < count; i++)
             {
@@ -436,7 +467,10 @@ namespace BaiduMap
                     addPicBtnNode.SendKeys(tempPath);
 
                     sqlLiteHelper.RunSql($"update ImageTable set IsUpLoad =1 where Id ={Convert.ToInt32(objArr[0])}");
-                    Thread.Sleep(1000 * 5);
+                    if (!IsSlow)
+                        Thread.Sleep(1000 * 2);
+                    else
+                        Thread.Sleep(1000 * 5);
                 }
                 catch (Exception ex)
                 {
